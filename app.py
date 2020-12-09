@@ -3,27 +3,12 @@ import scrape_mars
 import pymongo
 
 app = Flask('__name__')
-a = '''
-@app.route('/scrape')
-def scrape_route():
-    scrape_results = scrape_mars.scrape()
 
-    return render_template('index.html',
-        news_title = scrape_results['news_title'],
-        news_p = scrape_results['news_p'],
-        featured_image_url = scrape_results['featured_image_url'],
-        marsEqDia = scrape_results['marsEqDia'],
-        marsPolDia = scrape_results['marsPolDia'],
-        marsMass = scrape_results['marsMass'],
-        marsMoons = scrape_results['marsMoons'],
-        marsOrbDist = scrape_results['marsOrbDist'],
-        marsOrbPer = scrape_results['marsOrbPer'],
-        marsSurfTemps = scrape_results['marsSurfTemps'],
-        marsFirstRecord = scrape_results['marsFirstRecord'],
-        marsRecBy = scrape_results['marsRecBy'],
-        mars_facts_html_table = scrape_results['mars_facts_html_table'],
-        )
-'''
+app.static_folder = 'static'
+
+newsURL = 'https://mars.nasa.gov/news/?page=0&per_page=40&order=publish_date+desc%2Ccreated_at+desc&search=&category=19%2C165%2C184%2C204&blank_scope=Latest'
+featureURL = 'https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars'
+marsFactsURL = 'https://space-facts.com/mars/'
 
 @app.route('/scrape')
 def scrape_route():
@@ -36,11 +21,12 @@ def scrape_route():
     marsDB = myclient["marsDB"]
     # create collection in db
     marsColl = marsDB["marsColl"]
-
+    # Clear Collection
+    marsColl.remove({})
     # Insert Data
     marsColl.insert_one(scrape_results)
 
-    return "Mars data added to mongo database"
+    return '<div>Mars Data Added</div><a href="/">Go Back</a>'
 
 @app.route('/')
 def root_route():
@@ -52,8 +38,34 @@ def root_route():
     marsColl = marsDB["marsColl"]
 
     # find one result in the database (no filter, as we only uploading one dictionary)
-    found_dict = marsColl.find_one({})
-
+    try:
+        found_dict = marsColl.find_one({})
+    except:
+        print('no dictionary found')
+        
+    if not found_dict:
+        found_dict = {
+            'news_title':"",
+            'news_p':"",
+            'featured_image_url':"",
+            'marsEqDia':"",
+            'marsPolDia':"",
+            'marsMass':"",
+            'marsMoons':"",
+            'marsOrbDist':"",
+            'marsOrbPer':"",
+            'marsSurfTemps':"",
+            'marsFirstRecord':"",
+            'marsRecBy':"",
+            'mars_facts_html_table':"",
+            'mars_hem_img_urls':{
+                '1':"",
+                '2':"",
+                '3':'',
+                '4':''
+            }
+        }
+        
     return render_template('index.html',
     news_title = found_dict['news_title'],
     news_p = found_dict['news_p'],
@@ -68,6 +80,14 @@ def root_route():
     marsFirstRecord = found_dict['marsFirstRecord'],
     marsRecBy = found_dict['marsRecBy'],
     mars_facts_html_table = found_dict['mars_facts_html_table'],
+    mars_hem_0_title = list(found_dict['mars_hem_img_urls'].keys())[0],
+    mars_hem_1_title = list(found_dict['mars_hem_img_urls'].keys())[1],
+    mars_hem_2_title = list(found_dict['mars_hem_img_urls'].keys())[2],
+    mars_hem_3_title = list(found_dict['mars_hem_img_urls'].keys())[3],
+    mars_hem_0_pic = found_dict['mars_hem_img_urls'][list(found_dict['mars_hem_img_urls'].keys())[0]],
+    mars_hem_1_pic = found_dict['mars_hem_img_urls'][list(found_dict['mars_hem_img_urls'].keys())[1]],
+    mars_hem_2_pic = found_dict['mars_hem_img_urls'][list(found_dict['mars_hem_img_urls'].keys())[2]],
+    mars_hem_3_pic = found_dict['mars_hem_img_urls'][list(found_dict['mars_hem_img_urls'].keys())[3]]
     )
 
 app.run(port = '5000', debug = True)

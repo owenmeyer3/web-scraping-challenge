@@ -1,19 +1,69 @@
 <!DOCTYPE html>
 <html>
-    <head></head>
+    <head>
+        <!-- Local CSS -->
+        <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet"/>
+        <!-- BS CSS only -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+        <!-- BS JavaScript Bundle with Popper -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+    </head>
+    
     <body>
-        <div>{{news_title}}</div>
-        <div>{{news_p}}</div>
-        <div>{{featured_image_url}}</div>
-        <div>{{marsEqDia}}</div>
-        <div>{{marsPolDia}}</div>
-        <div>{{marsMass}}</div>
-        <div>{{marsMoons}}</div>
-        <div>{{marsOrbDist}}</div>
-        <div>{{marsOrbPer}}</div>
-        <div>{{marsSurfTemps}}</div>
-        <div>{{marsFirstRecord}}</div>
-        <div>{{marsRecBy}}</div>
-        <div>{{mars_facts_html_table | safe }}</div>
+        <div class="container">
+            <!-- Scrape Row -->
+            <div class="row myRow">
+                <div id="scrapeBox">
+                    <h1 id="scrapeBoxTitle">Mission To Mars</h3>
+                    <a href="/scrape"><button id="scrapeButton" type="button" class="btn btn-primary" width=10%>Scrape New Data</button></a>
+                </div>
+            </div>
+            <!-- News Row -->
+            <div class="row myRow">
+                <div id="newsBox">
+                    <h3>Latest Mars News</h3>
+                    <p id="postTitle">{{news_title}}</p>
+                    <p id="postDescription">{{news_p}}</p>
+                </div>
+            </div>
+            <!-- Featured and Table Row -->
+            <div class="row myRow">
+                <div class="col-7">
+                    <h3>Featured Mars Image</h3>
+                    <img src={{featured_image_url}} width=100%>
+                </div>
+                <div class="col-5">
+                    <h3>Mars Facts</h3>
+                    <table class="table">
+                        {{mars_facts_html_table | safe }}
+                      </table>
+                </div>
+            </div>
+            <!-- Hemisphere Row -->
+            <div class="row myRow">
+                <h3>Mars Hemispheres</h3>
+                <hr>
+                <div class="col-6">
+                    <div class="hemiPhotoBox">
+                        <img src={{mars_hem_0_pic}} width=90%>
+                        <h4>{{mars_hem_0_title}}</h4>
+                    </div>
+                    <div class="hemiPhotoBox">
+                        <img src={{mars_hem_1_pic}} width=90%>
+                        <h4>{{mars_hem_1_title}}</h4>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="hemiPhotoBox">
+                        <img src={{mars_hem_2_pic}} width=90%>
+                        <h4>{{mars_hem_2_title}}</h4>
+                    </div>
+                    <div class="hemiPhotoBox">
+                        <img src={{mars_hem_3_pic}} width=90%>
+                        <h4>{{mars_hem_3_title}}</h4>
+                    </div>
+                </div>
+            </div>
+        </body>
     </body>
 </html>
