@@ -19,6 +19,8 @@ This project performs web scraping of Nasa Mars pages, stores data in a noSQL da
 
 * Converts the data to a HTML table string.
 
+![](webCapture1.png)
+
 ### Mars Hemispheres
 
 * Visits the USGS Astrogeology site (https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars) to obtains high resolution images for each of Mars' hemispheres.
@@ -27,6 +29,7 @@ This project performs web scraping of Nasa Mars pages, stores data in a noSQL da
 
 * Appends the dictionary with the image url string and the hemisphere title to a list. This list will contain one dictionary for each hemisphere.
 
+![](webCapture2.png)
 - - -
 
 ## Step 2 - MongoDB and Flask Application
